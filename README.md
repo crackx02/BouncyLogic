@@ -4,7 +4,7 @@ This mod changes the way the Connect Tool generates the logic connection wire vi
 
 The mod has no real purpose, it just makes the game look a bit funny.
 
-![grafik](https://github.com/user-attachments/assets/0b2473ef-576f-4e55-b7f9-36cb9d3e273c)
+![grafik](https://github.com/user-attachments/assets/355d537a-f901-40da-b875-8d8dc8f06b85)
 
 Supported game version:
 
