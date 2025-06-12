@@ -12,7 +12,7 @@ constexpr float LineArcHeight = 1.0f;
 
 // Do not change this limit - the game crashes if there are more than ~10-20k lines.
 constexpr uint64_t LineCountLimit = 10000;
-constexpr uintptr_t Offset_GenerateConnectionLines = 0x02bbf50;
+constexpr uintptr_t Offset_GenerateGrabbedConnectionLine = 0x02bcb70;
 
 SM::Visualization** g_ppVisualization = nullptr;
 static std::vector<SM::Visualization::ConnectionLine> g_vecGeneratedLines;
@@ -36,9 +36,9 @@ static void GenerateArc(const SM::Visualization::ConnectionLine& line, uint8_t s
 	g_vecGeneratedLines.emplace_back(previousPoint, line.end, line.color);
 }
 
-static void(*O_GenerateConnectionLines)(void*, void*, void*, void*) = nullptr;
-static void H_GenerateConnectionLines(void* self, void* p2, void* p3, void* p4) {
-	O_GenerateConnectionLines(self, p2, p3, p4);
+static void(*O_GenerateGrabbedConnectionLine)(void*, void*, void*, void*) = nullptr;
+static void H_GenerateGrabbedConnectionLine(void* self, void* p2, void* p3, void* p4) {
+	O_GenerateGrabbedConnectionLine(self, p2, p3, p4);
 
 	SM::Visualization* pVisualization = *g_ppVisualization;
 	if ( pVisualization != nullptr ) {
@@ -70,12 +70,12 @@ static bool Attach() {
 		return false;
 	}
 
-	if (MH_CreateHook((void*)(base + Offset_GenerateConnectionLines), H_GenerateConnectionLines, (LPVOID*)&O_GenerateConnectionLines) != MH_OK) {
+	if (MH_CreateHook((void*)(base + Offset_GenerateGrabbedConnectionLine), H_GenerateGrabbedConnectionLine, (LPVOID*)&O_GenerateGrabbedConnectionLine) != MH_OK) {
 		MessageBoxA(nullptr, "MinHook CreateHook failed", "BouncyLogic ERROR", MB_OK);
 		return false;
 	}
 
-	if ( MH_EnableHook((void*)(base + Offset_GenerateConnectionLines)) != MH_OK ) {
+	if ( MH_EnableHook((void*)(base + Offset_GenerateGrabbedConnectionLine)) != MH_OK ) {
 		MessageBoxA(nullptr, "MinHook EnableHook failed", "BouncyLogic ERROR", MB_OK);
 		return false;
 	}
